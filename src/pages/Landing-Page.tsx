@@ -52,7 +52,7 @@ function LandingPage() {
   ];
 
   return (
-    <Box sx={{ minHeight: "100vh", bgcolor: "" }}>
+    <Box sx={{ minHeight: "100vh", bgcolor: "", direction: "rtl" }}>
       {/* <HeroComponent /> */}
       <Box
         sx={{
