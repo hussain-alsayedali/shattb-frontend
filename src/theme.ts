@@ -1,9 +1,4 @@
-import { createTheme, ThemeProvider } from "@mui/material";
-import "./App.css";
-
-import LandingPage from "./pages/Landing-Page";
-
-const theme = createTheme({
+export const mainTheme = {
   direction: "rtl",
   typography: {
     fontFamily: "Almarai, Arial, sans-serif",
@@ -41,9 +36,4 @@ const theme = createTheme({
       },
     },
   },
-});
-function App() {
-  return "Hello World";
-}
-
-export default App;
+};

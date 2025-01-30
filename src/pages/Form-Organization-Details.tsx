@@ -13,30 +13,37 @@ import {
   Box,
   Grid2,
 } from "@mui/material";
-
+import { Controller } from "react-hook-form";
 import { useRegisterFormStore } from "../store";
+import { useNavigate } from "react-router";
 
 const organizationDetailsFormSchema = z.object({
-  organizaitionName: z.string().min(3),
-  organizaitionNameEnglish: z.string().min(3),
-  orgazineationType: z.enum(["Company", "Ministry"]),
-  mainLocation: z.string().min(2),
+  organizationName: z.string().min(3, "يرجى تزويد اسم المنظمة من 3 حروف"),
+  organizationNameEnglish: z
+    .string()
+    .min(3, "يرجى تزويد اسم المنظمة من 3 حروف"),
+  organizationType: z.enum(["Company", "Ministry"], {
+    required_error: "يرجى اختيار نوع المنظمة",
+    invalid_type_error: "النوع المدخل غير صحيح",
+  }),
+  mainLocation: z.string().min(3, "يرجى تزويد موقع المنظمة من 3 حروف"),
 });
 
 type FormFields = z.infer<typeof organizationDetailsFormSchema>;
 
 function FormOrganizationDetails() {
+  const navigate = useNavigate();
   const { setOrganiztionDetails } = useRegisterFormStore();
   const {
     register,
     handleSubmit,
     setError,
     formState: { errors, isSubmitting },
+    control,
   } = useForm<FormFields>({
     defaultValues: {
-      organizaitionName: "شركة البناء العقارية",
-      organizaitionNameEnglish: "Real Estate Construction Company",
-      orgazineationType: "Company",
+      organizationName: "شركة البناء العقارية",
+      organizationNameEnglish: "Real Estate Construction Company",
       mainLocation: "الرياض",
     },
     resolver: zodResolver(organizationDetailsFormSchema),
@@ -44,13 +51,10 @@ function FormOrganizationDetails() {
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
       setOrganiztionDetails(data);
-      console.log("Form data saved to Zustand store");
+      navigate("/form/user"); // Navigate to next step
     } catch (error) {
-      setError("root", {
-        message: "An error occurred while saving the data",
-      });
+      setError("root", { message: "حدث خطأ أثناء حفظ البيانات" });
     }
   };
 
@@ -81,9 +85,9 @@ function FormOrganizationDetails() {
               fullWidth
               label="اسم المنظمة (عربي)"
               variant="outlined"
-              {...register("organizaitionName")}
-              error={!!errors.organizaitionName}
-              helperText={errors.organizaitionName?.message}
+              {...register("organizationName")}
+              error={!!errors.organizationName}
+              helperText={errors.organizationName?.message}
               sx={{
                 "& label": { color: "primary.main" },
                 "& input": { color: "white" },
@@ -97,9 +101,9 @@ function FormOrganizationDetails() {
               fullWidth
               label="اسم المنظمة (انجليزي)"
               variant="outlined"
-              {...register("organizaitionNameEnglish")}
-              error={!!errors.organizaitionNameEnglish}
-              helperText={errors.organizaitionNameEnglish?.message}
+              {...register("organizationNameEnglish")}
+              error={!!errors.organizationNameEnglish}
+              helperText={errors.organizationNameEnglish?.message}
               sx={{
                 "& label": { color: "primary.main" },
                 "& input": { color: "white" },
@@ -108,32 +112,45 @@ function FormOrganizationDetails() {
           </Grid2>
 
           <Grid2 size={{ xs: 12, md: 6 }}>
-            <FormControl fullWidth>
-              <InputLabel sx={{ color: "primary.main" }}>
-                نوع المنظمة
-              </InputLabel>
-              <Select
-                {...register("orgazineationType")}
-                label=""
-                sx={{
-                  color: "white",
-                  "& .MuiSvgIcon-root": { color: "primary.main" },
-                }}
-              >
-                <MenuItem value="Company">Company</MenuItem>
-                <MenuItem value="Ministry">Ministry</MenuItem>
-              </Select>
-            </FormControl>
+            <Controller
+              name="organizationType"
+              control={control}
+              defaultValue={undefined}
+              render={({ field }) => (
+                <FormControl fullWidth error={!!errors.organizationType}>
+                  <InputLabel sx={{ color: "primary.main" }}>
+                    نوع المنظمة
+                  </InputLabel>
+                  <Select
+                    {...field}
+                    label="نوع المنظمة"
+                    sx={{
+                      color: "white",
+                      "& .MuiSvgIcon-root": { color: "primary.main" },
+                    }}
+                  >
+                    <MenuItem value="Company">Company</MenuItem>
+                    <MenuItem value="Ministry">Ministry</MenuItem>
+                  </Select>
+                  {errors.organizationType && (
+                    <Typography color="error" variant="caption">
+                      {errors.organizationType.message}
+                    </Typography>
+                  )}
+                </FormControl>
+              )}
+            />
           </Grid2>
 
           <Grid2 size={{ xs: 12, md: 6 }}>
             <TextField
               fullWidth
-              label="Main Location"
+              label="الفرع الرئيسي"
               variant="outlined"
               {...register("mainLocation")}
               error={!!errors.mainLocation}
               helperText={errors.mainLocation?.message}
+              inputProps={{ style: { direction: "rtl" } }}
               sx={{
                 "& label": { color: "primary.main" },
                 "& input": { color: "white" },
