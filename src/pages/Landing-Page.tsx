@@ -82,6 +82,15 @@ function LandingPage() {
               >
                 سجل الآن
               </Button>
+              <Button
+                variant="outlined"
+                color="primary"
+                size="large"
+                sx={{ mt: 3, mx: 4 }}
+                onClick={() => navigate("/login")}
+              >
+                لدي حساب
+              </Button>
             </Grid2>
           </Grid2>
         </Container>

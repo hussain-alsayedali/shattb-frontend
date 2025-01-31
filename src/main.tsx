@@ -11,6 +11,7 @@ import FormExtraOrganizationDetails from "./pages/Form-Extra-Organization-Detail
 import { mainTheme } from "./theme.ts";
 import LandingPage from "./pages/Landing-Page.tsx";
 import OrganizationDetails from "./pages/Organizaiton-Details.tsx";
+import LoginOrganization from "./pages/Login-Organization.tsx";
 const theme = createTheme({
   // direction: "rtl",
   typography: {
@@ -57,6 +58,8 @@ createRoot(document.getElementById("root")!).render(
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LandingPage />} />
+          <Route path="/login" element={<LoginOrganization />} />
+
           <Route path="/form" element={<FormStepper />}>
             <Route path="organization" element={<FormOrganizationDetails />} />
             <Route path="user" element={<FormUserDetails />} />

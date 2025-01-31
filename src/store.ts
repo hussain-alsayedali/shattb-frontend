@@ -79,16 +79,17 @@ export const useRegisterFormStore = create<RegisterFormStore>((set) => ({
 interface AuthStore {
   customToken: string | null;
   idToken: string | null;
-  details: string | null;
+  details: any | null | string;
   setTokens: (customToken: string) => void;
   logout: () => void;
   setDetails: (details: any) => void;
+  setIdToken: (idToken: any) => void;
 }
 
 export const useAuthStore = create<AuthStore>((set) => ({
-  customToken: localStorage.getItem("authToken"),
+  customToken: localStorage.getItem("customToken"),
   idToken: localStorage.getItem("idToken"),
-  details: "",
+  details: localStorage.getItem("userDetails"),
 
   setTokens: async (customToken: string) => {
     try {
@@ -103,12 +104,17 @@ export const useAuthStore = create<AuthStore>((set) => ({
     }
   },
 
+  setIdToken: (token) => {
+    localStorage.setItem("idToken", token);
+    console.log("idToken", token);
+    set({ idToken: token });
+  },
   setDetails: (details) => {
     set({ details });
   },
 
   logout: () => {
-    localStorage.removeItem("authToken");
+    localStorage.removeItem("customToken");
     localStorage.removeItem("idToken");
     set({
       customToken: null,
