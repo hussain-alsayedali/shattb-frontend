@@ -18,8 +18,8 @@ import { useRegisterFormStore } from "../store";
 import { useNavigate } from "react-router";
 
 const organizationDetailsFormSchema = z.object({
-  organizationName: z.string().min(3, "يرجى تزويد اسم المنظمة من 3 حروف"),
-  organizationNameEnglish: z
+  organizaitionName: z.string().min(3, "يرجى تزويد اسم المنظمة من 3 حروف"),
+  organizaitionNameEnglish: z
     .string()
     .min(3, "يرجى تزويد اسم المنظمة من 3 حروف"),
   organizationType: z.enum(["Company", "Ministry"], {
@@ -42,8 +42,8 @@ function FormOrganizationDetails() {
     control,
   } = useForm<FormFields>({
     defaultValues: {
-      organizationName: "شركة البناء العقارية",
-      organizationNameEnglish: "Real Estate Construction Company",
+      organizaitionName: "شركة البناء العقارية",
+      organizaitionNameEnglish: "Real Estate Construction Company",
       mainLocation: "الرياض",
     },
     resolver: zodResolver(organizationDetailsFormSchema),
@@ -85,9 +85,9 @@ function FormOrganizationDetails() {
               fullWidth
               label="اسم المنظمة (عربي)"
               variant="outlined"
-              {...register("organizationName")}
-              error={!!errors.organizationName}
-              helperText={errors.organizationName?.message}
+              {...register("organizaitionName")}
+              error={!!errors.organizaitionName}
+              helperText={errors.organizaitionName?.message}
               sx={{
                 "& label": { color: "primary.main" },
                 "& input": { color: "white" },
@@ -101,9 +101,9 @@ function FormOrganizationDetails() {
               fullWidth
               label="اسم المنظمة (انجليزي)"
               variant="outlined"
-              {...register("organizationNameEnglish")}
-              error={!!errors.organizationNameEnglish}
-              helperText={errors.organizationNameEnglish?.message}
+              {...register("organizaitionNameEnglish")}
+              error={!!errors.organizaitionNameEnglish}
+              helperText={errors.organizaitionNameEnglish?.message}
               sx={{
                 "& label": { color: "primary.main" },
                 "& input": { color: "white" },

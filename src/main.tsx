@@ -10,6 +10,7 @@ import { createTheme, ThemeProvider } from "@mui/material";
 import FormExtraOrganizationDetails from "./pages/Form-Extra-Organization-Details.tsx";
 import { mainTheme } from "./theme.ts";
 import LandingPage from "./pages/Landing-Page.tsx";
+import OrganizationDetails from "./pages/Organizaiton-Details.tsx";
 const theme = createTheme({
   // direction: "rtl",
   typography: {
@@ -64,6 +65,7 @@ createRoot(document.getElementById("root")!).render(
               element={<FormExtraOrganizationDetails />}
             />
           </Route>
+          <Route path="/organization" element={<OrganizationDetails />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

@@ -1,5 +1,6 @@
 import { create } from "zustand";
-
+import { signInWithCustomToken } from "firebase/auth";
+import { app, auth } from "./api/firebase-config";
 type RegisterFormStore = {
   // organization Details
   organizaitionName: string;
@@ -44,25 +45,6 @@ type extraOrganizationDetails = Partial<
     "numberOfEmployees" | "numberOfBranches" | "identifationFile"
   >
 >;
-// const registerFormSchema = z.object({
-//     organizaitionName: z.string(),
-//     organizaitionNameEnglish: z.string(),
-//     orgazineationType: z.enum(["Company", "Ministry"]),
-//     numberOfEmployees: z.number().min(1),
-//     numberOfBranches: z.number().min(1),
-//     location: z.string(),
-//     email: z.string().email(),
-//     password: z.string().min(8),
-//     phoneNumber: z.string().min(10),
-//     identifationFile: z.instanceof(File),
-
-// numberOfEmployees: z.number().min(1),
-// numberOfBranches: z.number().min(1),
-// email: z.string().email(),
-// password: z.string().min(8),
-// phoneNumber: z.string().min(10),
-// identifationFile: z.instanceof(File),
-//   });
 export const useRegisterFormStore = create<RegisterFormStore>((set) => ({
   organizaitionName: "",
   organizaitionNameEnglish: "",
@@ -92,4 +74,46 @@ export const useRegisterFormStore = create<RegisterFormStore>((set) => ({
       ...state,
       ...payload,
     })),
+}));
+
+interface AuthStore {
+  customToken: string | null;
+  idToken: string | null;
+  details: string | null;
+  setTokens: (customToken: string) => void;
+  logout: () => void;
+  setDetails: (details: any) => void;
+}
+
+export const useAuthStore = create<AuthStore>((set) => ({
+  customToken: localStorage.getItem("authToken"),
+  idToken: localStorage.getItem("idToken"),
+  details: "",
+
+  setTokens: async (customToken: string) => {
+    try {
+      localStorage.setItem("customToken", customToken);
+      const userCredential = await signInWithCustomToken(auth, customToken);
+      const idToken = await userCredential.user.getIdToken();
+      localStorage.setItem("idToken", idToken);
+      set({ customToken, idToken });
+    } catch (error) {
+      console.error("Error exchanging custom token:", error);
+      throw error;
+    }
+  },
+
+  setDetails: (details) => {
+    set({ details });
+  },
+
+  logout: () => {
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("idToken");
+    set({
+      customToken: null,
+      idToken: null,
+      details: null,
+    });
+  },
 }));

@@ -13,8 +13,9 @@ import {
   InputAdornment,
 } from "@mui/material";
 import { Controller } from "react-hook-form";
-import { useRegisterFormStore } from "../store";
+import { useAuthStore, useRegisterFormStore } from "../store";
 import { useNavigate } from "react-router";
+import axiosInstance from "../api/axios-instance";
 
 const organizationDetailsFormSchema = z.object({
   numberOfEmployees: z.number().min(1, "يرجى تزويد عدد الموظفين"),
@@ -31,7 +32,18 @@ type FormFields = z.infer<typeof organizationDetailsFormSchema>;
 
 function FormExtraOrganizationDetails() {
   const navigate = useNavigate();
-  const { setExtraOrganizationDetails } = useRegisterFormStore();
+  const {
+    setExtraOrganizationDetails,
+    organizaitionName,
+    organizaitionNameEnglish,
+    orgazineationType,
+    mainLocation,
+    email,
+    password,
+    phoneNumber,
+  } = useRegisterFormStore();
+
+  const { setTokens } = useAuthStore();
   const {
     register,
     handleSubmit,
@@ -45,7 +57,37 @@ function FormExtraOrganizationDetails() {
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
       setExtraOrganizationDetails(data);
-      navigate("/form/next-step"); // Update with your next route
+      const payload = {
+        organizaitionName: organizaitionName,
+        organizaitionNameEnglish: organizaitionNameEnglish,
+        organizaitionType: orgazineationType,
+        mainLocation: mainLocation,
+        numberOfEmployees: data.numberOfEmployees,
+        numberOfBranches: data.numberOfBranches,
+
+        email,
+        password,
+        phoneNumber,
+
+        identificationFile: data.identificationFile,
+      };
+
+      console.log(payload);
+      const response = await axiosInstance.post(
+        "/organization-auth/signup",
+        payload,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      console.log(response);
+      setTokens(response.data.customToken);
+      if (response.status === 201) {
+        navigate("/organization");
+      }
     } catch (error) {
       setError("root", { message: "حدث خطأ أثناء حفظ البيانات" });
     }
@@ -193,7 +235,7 @@ function FormExtraOrganizationDetails() {
             <Button
               type="submit"
               fullWidth
-              variant="contained"
+              variant="outlined"
               disabled={isSubmitting}
               sx={{
                 mt: 2,
