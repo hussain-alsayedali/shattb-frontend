@@ -51,7 +51,7 @@ function LoginOrganization() {
 
       const idToken = await userCredential.user.getIdToken();
       console.log("idtoken", idToken);
-      setIdToken(idToken);
+      await setIdToken(idToken);
       navigate("/organization");
     } catch (err) {
       setError("فشل تسجيل الدخول. يرجى التحقق من بيانات الاعتماد الخاصة بك.");

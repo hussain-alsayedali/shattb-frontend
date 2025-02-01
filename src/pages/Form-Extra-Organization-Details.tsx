@@ -11,11 +11,13 @@ import {
   Box,
   Grid2,
   InputAdornment,
+  Alert,
 } from "@mui/material";
 import { Controller } from "react-hook-form";
 import { useAuthStore, useRegisterFormStore } from "../store";
 import { useNavigate } from "react-router";
 import axiosInstance from "../api/axios-instance";
+import { useEffect, useState } from "react";
 
 const organizationDetailsFormSchema = z.object({
   numberOfEmployees: z.number().min(1, "يرجى تزويد عدد الموظفين"),
@@ -43,7 +45,9 @@ function FormExtraOrganizationDetails() {
     phoneNumber,
   } = useRegisterFormStore();
 
-  const { setTokens } = useAuthStore();
+  const [_, setLoading] = useState(true);
+  // const [errors, setErrors] = useState<string | null>(null);
+  const { idToken, setDetails, setTokens } = useAuthStore();
   const {
     register,
     handleSubmit,
@@ -84,14 +88,34 @@ function FormExtraOrganizationDetails() {
       );
 
       console.log(response);
-      setTokens(response.data.customToken);
+      await setTokens(response.data.customToken);
       if (response.status === 201) {
         navigate("/organization");
       }
     } catch (error) {
-      setError("root", { message: "حدث خطأ أثناء حفظ البيانات" });
+      setError("root", { message: `حدث خطأ أثناء حفظ البيانات, ${error}` });
     }
   };
+  useEffect(() => {
+    async function fetchOrganizationDetails() {
+      if (!idToken) {
+        setError("root", { message: "يرجى تسجيل الدخول لعرض هذه الصفحة" });
+        setLoading(false);
+        return;
+      }
+      try {
+        const response = await axiosInstance.get("/organizaition", {
+          headers: { Authorization: `Bearer ${idToken}` },
+        });
+        setDetails(response.data);
+      } catch {
+        setError("root", { message: "لم تنجح العملية" });
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchOrganizationDetails();
+  }, [idToken, setDetails]);
 
   return (
     <Container maxWidth="md" sx={{ py: 4 }}>
@@ -249,6 +273,13 @@ function FormExtraOrganizationDetails() {
               {isSubmitting ? "جاري الحفظ..." : "حفظ البيانات"}
             </Button>
           </Grid2>
+        </Grid2>
+        <Grid2 size={{ xs: 12 }}>
+          {errors.root?.message && (
+            <Alert severity="error" sx={{ mt: 2 }}>
+              {errors.root.message}
+            </Alert>
+          )}
         </Grid2>
       </Box>
     </Container>

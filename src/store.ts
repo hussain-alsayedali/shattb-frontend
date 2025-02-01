@@ -97,7 +97,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
       const userCredential = await signInWithCustomToken(auth, customToken);
       const idToken = await userCredential.user.getIdToken();
       localStorage.setItem("idToken", idToken);
-      set({ customToken, idToken });
+      set({ idToken: idToken });
     } catch (error) {
       console.error("Error exchanging custom token:", error);
       throw error;
