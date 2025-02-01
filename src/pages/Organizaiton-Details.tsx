@@ -8,7 +8,7 @@ import {
   Box,
   Skeleton,
   Alert,
-  Divider,
+  // Divider,
   Card,
   CardContent,
   Stack,
@@ -28,18 +28,18 @@ import {
 import axiosInstance from "../api/axios-instance";
 import { useNavigate } from "react-router";
 
-interface OrganizationResponse {
-  id: string;
-  organizaitionName: string;
-  organizaitionNameEnglish: string;
-  organizaitionType: "Company" | "Ministry";
-  location: string;
-  numberOfEmployees: number;
-  numberOfBranches: number;
-  email: string;
-  phoneNumber: string;
-  mainLocation: string;
-}
+// interface OrganizationResponse {
+//   id: string;
+//   organizaitionName: string;
+//   organizaitionNameEnglish: string;
+//   organizaitionType: "Company" | "Ministry";
+//   location: string;
+//   numberOfEmployees: number;
+//   numberOfBranches: number;
+//   email: string;
+//   phoneNumber: string;
+//   mainLocation: string;
+// }
 
 function OrganizationDetails() {
   const [loading, setLoading] = useState(true);

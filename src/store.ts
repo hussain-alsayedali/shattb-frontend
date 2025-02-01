@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { signInWithCustomToken } from "firebase/auth";
-import { app, auth } from "./api/firebase-config";
+import { auth } from "./api/firebase-config";
 type RegisterFormStore = {
   // organization Details
   organizaitionName: string;

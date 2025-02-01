@@ -1,5 +1,5 @@
 import { Box, Stepper, Step, StepLabel } from "@mui/material";
-import { Outlet, useLocation, useNavigate } from "react-router";
+import { Outlet, useLocation } from "react-router";
 
 const steps = [
   { label: "تفاصيل المنظمة", path: "organization" },

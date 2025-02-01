@@ -4,9 +4,9 @@ import {
   Container,
   Grid2,
   Typography,
-  createTheme,
-  ThemeProvider,
-  useMediaQuery,
+  // createTheme,
+  // ThemeProvider,
+  // useMediaQuery,
 } from "@mui/material";
 import {
   CheckCircle,
@@ -14,13 +14,13 @@ import {
   Assignment,
   RequestQuote,
 } from "@mui/icons-material";
-import HeroComponent from "../components/Hero";
+
 import { useNavigate } from "react-router";
 
-const theme = createTheme();
+// const theme = createTheme();
 
 function LandingPage() {
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  // const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const navigate = useNavigate();
   const services = [
     {

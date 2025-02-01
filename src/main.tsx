@@ -1,6 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import App from "./App.tsx";
+// import App from "./App.tsx";
 import { BrowserRouter, Routes, Route } from "react-router";
 
 import FormOrganizationDetails from "./pages/Form-Organization-Details.tsx";
@@ -8,7 +8,7 @@ import FormUserDetails from "./pages/Form-User-Details.tsx";
 import FormStepper from "./pages/Form-Stepper.tsx";
 import { createTheme, ThemeProvider } from "@mui/material";
 import FormExtraOrganizationDetails from "./pages/Form-Extra-Organization-Details.tsx";
-import { mainTheme } from "./theme.ts";
+// import { mainTheme } from "./theme.ts";
 import LandingPage from "./pages/Landing-Page.tsx";
 import OrganizationDetails from "./pages/Organizaiton-Details.tsx";
 import LoginOrganization from "./pages/Login-Organization.tsx";
