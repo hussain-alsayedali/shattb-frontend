@@ -1,32 +1,16 @@
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
 import { getAnalytics } from "firebase/analytics";
-
-// TODO: Add SDKs for Firebase products that you want to use
-
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDozna-AvS9mimtJJh5YbGF7jA9_3ZyNzY",
-
-  authDomain: "nestjs-simple-backend.firebaseapp.com",
-
-  projectId: "nestjs-simple-backend",
-
-  storageBucket: "nestjs-simple-backend.firebasestorage.app",
-
-  messagingSenderId: "483308793880",
-
-  appId: "1:483308793880:web:def91f1a2c59d24f02536d",
-
-  measurementId: "G-QG79EKCNS6",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
-
-// Initialize Firebase
 
 export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
